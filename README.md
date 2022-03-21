@@ -6,6 +6,8 @@ This repository is used to develop, test and contain designs for device (or whol
 
 ## Behavioural model of the system
 
+![Behavioural flowchart](documentation/resources/behav_flowchart.png "Behavioural flowchart)
+
 On the highest abstraction level, the system works as follows:
 
  - There is a sensing element, comprised of several sensors and a MCU managing them,
