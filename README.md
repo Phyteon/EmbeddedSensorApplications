@@ -6,7 +6,7 @@ This repository is used to develop, test and contain designs for device (or whol
 
 ## Behavioural model of the system
 
-![Behavioural flowchart](documentation/resources/behav_flowchart.png "Behavioural flowchart)
+![Behavioural flowchart](documentation/resources/behav_flowchart.png "Behavioural flowchart")
 
 On the highest abstraction level, the system works as follows:
 
@@ -33,5 +33,7 @@ Sensors shall be part of another board, which will be custom-made for this proje
 The exact requirements for each parameter measurement are defined ***here***. \# TODO: Add a link to another markdown file with reqs.
 
 The board containing the sensors shall be designed so that it could be easily extended in the future - for example, via 2.54mm gold pins (connection type is not a requirement - only the possibility of connection itself).
+
+
 
 
