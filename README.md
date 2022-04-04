@@ -16,7 +16,8 @@ On the highest abstraction level, the system works as follows:
  - The server processes the data, if after processing some conditions are met, ThingSpeak triggers a webhook event,
  - The webhook is picked up by the IFTTT app installed on user's mobile device, triggering any desired actions, mainly a notification.
 
-The exact description of both services and their configuration can be found ***here*** \# TODO - add link.
+The exact description of IFTTT in this project can be found [here](documentation/ifttt/README.md "IFTTT usage and configuration in this project").
+The exact description of ThingSpeak in this project can be found [here](documentation/thingspeak/README.md "ThingSpeak usage and configuration in this project.").
 
 ## Structural model of the system
 
