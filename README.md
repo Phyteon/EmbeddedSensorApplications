@@ -41,10 +41,3 @@ In the minimal working version, module shall be powered from external source via
 
 If the time allows, a custom-made cover for the whole sensing element will be made.
 
-### Server
-
-\# WIP!
-
-
-
-
