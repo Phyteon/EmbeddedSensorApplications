@@ -12,11 +12,11 @@ On the highest abstraction level, the system works as follows:
 
  - There is a sensing element, comprised of several sensors and a MCU managing them,
  - Sensing element takes the measurements in some specified time intervals,
- - The measurement outcome is processed and logged onto a server,
- - The server can notify the user in case that some event occurs (triggered by i.e. the measurement values) or just store the data,
- - The user has access to the stored data via some kind of interface.
+ - The measurement outcome is processed and sent to ThingSpeak server,
+ - The server processes the data, if after processing some conditions are met, ThingSpeak triggers a webhook event,
+ - The webhook is picked up by the IFTTT app installed on user's mobile device, triggering any desired actions, mainly a notification.
 
-As one can see, the above description is pretty vague, and that is because the time to develop this system is really limited - as such, some elements of the design may not be fully developed and only delivered as proof-of-concept or not implemented at all. All the details and requirements will be described below.
+The exact description of both services and their configuration can be found ***here*** \# TODO - add link.
 
 ## Structural model of the system
 
