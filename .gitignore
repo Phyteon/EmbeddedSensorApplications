@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# Platform IO
+code/TMD/.pio
+code/TMD/.vscode/.browse.c_cpp.db*
+code/TMD/.vscode/c_cpp_properties.json
+code/TMD/.vscode/launch.json
+code/TMD/.vscode/ipch
+code/TMD/*/README
+code/TMD/.gitignore
