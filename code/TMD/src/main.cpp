@@ -1,4 +1,6 @@
-
+#include <iostream>
 extern "C"{
-    void app_main() {}
+    void app_main() {
+        std::cout << "Test" << std::endl;
+    }
 }
