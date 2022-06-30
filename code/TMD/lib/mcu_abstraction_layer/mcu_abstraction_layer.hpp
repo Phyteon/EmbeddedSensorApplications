@@ -5,11 +5,19 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "esp_err.h"
+extern "C"{
+    #include "esp_err.h"
+    #include "driver/i2c.h"
+    }
 #include "diagnostic.hpp"
-#include "driver/i2c.h"
+
 
 namespace mcu_ab_layer {
+
+    /*!
+    * Forward declaration so that I2CGlobalDataContainer can reference later the I2C class.
+    */
+    class I2C;
 
     /*!
     * Class holding the init and status data of all the I2C ports.
@@ -58,8 +66,19 @@ namespace mcu_ab_layer {
                 .mode = I2C_MODE_MASTER,
                 .sda_io_num = 21,
                 .scl_io_num = 22,
-                .master.clk_speed = 400000
+                .master{.clk_speed = 400000}
             };
+
+            /*!
+            * Simple method for comparing i2c_config_t struct to the static constant one.
+            *
+            * This is a simple workaround for providing comparison for two structures of the
+            * same type, instead of building a wrapper for the struct itself.
+            * 
+            * @param config Reference to a c struct containing configuration to be compared to
+            *               default config.
+            */
+            static bool compare_config_to_default_config(const i2c_config_t& config);
             
             /*!
             * Parametric constructor.
@@ -77,9 +96,7 @@ namespace mcu_ab_layer {
             *               attribute 'config'.
             *
             */
-            I2C(i2c_port_t i2c_port_num,
-                int intr_alloc_flags,
-                const i2c_config_t& config);
+            I2C(i2c_port_t i2c_port_num, int intr_alloc_flags, const i2c_config_t& config);
             
             /*!
             * Default constructor.
@@ -93,6 +110,15 @@ namespace mcu_ab_layer {
             * explicit constructor should be used to initialize the i2c port.
             */
             I2C();
+
+            /*!
+            * Class destructor.
+            *
+            * During object deallocation, the installed driver must also be uninitialized.
+            */
+            ~I2C(){
+                i2c_driver_delete(this->i2c_port_num);
+            }
 
             esp_err_t write_to_slave(std::vector<uint8_t>& data_buffer, uint8_t device_addr,
                                     TickType_t timeout);
