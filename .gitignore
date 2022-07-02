@@ -39,3 +39,8 @@ code/TMD/.vscode/launch.json
 code/TMD/.vscode/ipch
 code/TMD/*/README
 code/TMD/.gitignore
+**.old
+
+# Temporary excludes
+documentation/generated
+
