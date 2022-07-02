@@ -5,6 +5,9 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <set>
+#include <iostream>
+#include "diagnostic.hpp"
 extern "C"{
     #include "esp_err.h"
     #include "driver/i2c.h"
@@ -35,7 +38,16 @@ namespace mcu_ab_layer {
             */
             I2CGlobalDataContainer() = default;
         protected:
-            static std::vector<I2C*> initialized_ports;
+            inline static std::set<I2C*> initialized_ports;
+        public:
+            /*!
+            * Returns the information about currently initialized ports.
+            *
+            * Info is returned as a std::map, where the key is port number and value is
+            * std::pair, where the first element is copied configuration and the second is
+            * copied init flags.
+            */
+            std::map<i2c_port_t, std::pair<i2c_config_t, int>> get_init_ports_info();
 
     };
     
@@ -62,11 +74,14 @@ namespace mcu_ab_layer {
             * is initialised.
             *
             */
-            static constexpr i2c_config_t default_i2c_conf = {
+            inline static constexpr i2c_config_t default_i2c_conf = {
                 .mode = I2C_MODE_MASTER,
                 .sda_io_num = 21,
                 .scl_io_num = 22,
-                .master{.clk_speed = 400000}
+                .sda_pullup_en = false,
+                .scl_pullup_en = false,
+                .master{.clk_speed = 400000},
+                .clk_flags = I2C_SCLK_DEFAULT
             };
 
             /*!
@@ -77,13 +92,15 @@ namespace mcu_ab_layer {
             * 
             * @param config Reference to a c struct containing configuration to be compared to
             *               default config.
+            * @return True if struct is the same as default config. False otherwise.
             */
             static bool compare_config_to_default_config(const i2c_config_t& config);
             
             /*!
             * Parametric constructor.
             *
-            * Initializes the i2c port with the specified parameters.
+            * Initializes the i2c port with the specified parameters and adds the pointer to itself
+            * to the global set holding all the initialized i2c ports.
             * 
             * @param i2c_port_num Number of the port to be initialized. Only I2C_PORT_NUM_0 and
             *                     I2C_PORT_NUM_1 supported.
@@ -114,15 +131,47 @@ namespace mcu_ab_layer {
             /*!
             * Class destructor.
             *
-            * During object deallocation, the installed driver must also be uninitialized.
+            * During object deallocation, the installed driver must also be uninitialized and
+            * removed from global set.
             */
-            ~I2C(){
-                i2c_driver_delete(this->i2c_port_num);
-            }
+            ~I2C();
 
-            esp_err_t write_to_slave(std::vector<uint8_t>& data_buffer, uint8_t device_addr,
+            /*!
+            * Returns information about port in string format.
+            *
+            * @return Constructed string containing port info.
+            */
+            std::string get_port_data_as_str();
+
+            /*!
+            * Wrapper for functions used to write data to slave, blocking mode.
+            *
+            * This methods wraps around original C functions used to communicate with slave,
+            * while providing some C++ high level features.
+            * 
+            * @param data_buffer Vector holding data to be sent to slave.
+            * @param device_addr Address of the device on the bus.
+            * @param timeout Time after which if the slave won't acknowledge the transmission, it
+            *                is considered a failed transmission.
+            * @return Return value of the original function (if no exception was thrown along the
+            *         way).
+            */
+            esp_err_t write_to_slave(const std::vector<uint8_t>& data_buffer, uint8_t device_addr,
                                     TickType_t timeout);
 
+            /*!
+            * Wrapper for functions used to read data from slave, blocking mode.
+            *
+            * This methods wraps around original C functions used to communicate with slave,
+            * while providing some C++ high level features.
+            * 
+            * @param data_buffer Vector to which the data will be written to.
+            * @param device_addr Address of the device on the bus.
+            * @param timeout Time after which if the slave won't acknowledge the transmission, it
+            *                is considered a failed transmission.
+            * @return Return value of the original function (if no exception was thrown along the
+            *         way).
+            */
             esp_err_t read_from_slave(std::vector<uint8_t>& data_buffer, uint8_t device_addr,
                                     TickType_t timeout);
 

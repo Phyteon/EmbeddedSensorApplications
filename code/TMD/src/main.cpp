@@ -1,13 +1,32 @@
-#include <stdio.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp_chip_info.h"
-#include "esp_spi_flash.h"
+
+/*!
+* C++ libs BEGIN
+*/
+#include <iostream>
 #include "mcu_abstraction_layer.hpp"
+#include "application.hpp"
+/*!
+* C++ libs END
+*/
+
+
+/*!
+* All the C libraries needed included C style
+*/
+extern "C" {
+    #include "sdkconfig.h"
+    #include "freertos/FreeRTOS.h"
+    #include "freertos/task.h"
+    #include "esp_chip_info.h"
+    #include "esp_spi_flash.h"
+    #include <stdio.h>
+}
+
 extern "C"{
     void app_main() {
-        printf("Hello world!\n");
+        printf("Test I2C driver init\n");
+        application_main_wrapper();
+        
 
         /* Print chip information */
         esp_chip_info_t chip_info;
