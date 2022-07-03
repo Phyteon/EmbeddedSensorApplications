@@ -3,7 +3,10 @@
 #define __DIAGNOSTIC__
 
 #include <stdexcept>
-#include "esp_err.h"
+extern "C" {
+    #include "esp_err.h"
+}
+
 
 namespace diagnostic {
     class DiagnosticUtils {
@@ -50,6 +53,13 @@ namespace diagnostic {
                 DiagnosticUtils::prepare_error_msg("ERROR: I2C master write to slave failed; ",
                                                     context, error_code)
                 ){};
+    };
+
+    class Sensirion_SHT4X_CRC8ChecksumMismatchException : public std::logic_error {
+        public:
+            Sensirion_SHT4X_CRC8ChecksumMismatchException(const std::string& context) :
+            std::logic_error("ERROR: Transmission from SHT4X sensor faulty, CRC not matching! " +
+            context){};
     };
 
     class NotImplementedException : public std::logic_error {

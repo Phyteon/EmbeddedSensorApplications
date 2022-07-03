@@ -6,6 +6,12 @@
 #include <iostream>
 #include "diagnostic.hpp"
 #include <memory>
+#include "sensor_specific_drivers/sensirion_sht4x/sensirion_sht4x.hpp"
+#include <utility>
+
+extern "C" {
+    #include "freertos/task.h"
+}
 
 /*!
 * A wrapper function for all the underlying C++ code.
