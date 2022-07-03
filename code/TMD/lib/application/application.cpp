@@ -9,6 +9,7 @@ void application_main_wrapper(){
         std::pair<float, float> humidity_and_temp;
         sht4x::Sensirion_SHT4X sensor(i2c_driver);
         std::cout << "Constructed sensor driver" << std::endl;
+        std::cout << "Serial number is: " + std::to_string(sensor.get_serial_number()) << std::endl;
         while (true) {
             humidity_and_temp = sensor.measure_humidity_temperature_blocking();
             std::cout << "Humidity: " + std::to_string(std::get<0>(humidity_and_temp)) << std::endl;
