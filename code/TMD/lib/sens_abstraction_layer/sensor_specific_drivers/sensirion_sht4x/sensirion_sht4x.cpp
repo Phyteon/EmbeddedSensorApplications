@@ -64,8 +64,9 @@ std::pair<float, float> sht4x::Sensirion_SHT4X::measure_humidity_temperature_blo
                                             sht4x::Sensirion_SHT4X::milisec_measure_delay);
     std::pair<uint16_t, uint16_t> temp_and_humidity = this->validate_and_extract_data(
                                                                         this->input_data_buffer);
+    
+    float humidity = (float)(std::get<1>(temp_and_humidity));
     /* First casting to signed integer, so there is no problem with sign when converting to float */
-    float humidity = (float)((int16_t)std::get<1>(temp_and_humidity));
     float temperature = (float)((int16_t)std::get<0>(temp_and_humidity));
     /* According to manufacturer specification */
     humidity = -6.0f + 125.0f * (humidity / 65535.0f);
